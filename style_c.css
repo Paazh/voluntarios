@@ -1,0 +1,15 @@
+#calendar {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.fc-event {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+}
+
+.fc-event:hover {
+    background-color: #45a049;
+}

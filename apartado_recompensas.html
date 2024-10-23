@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apartado de Recompensas</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        
+        .rewards-section {
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .reward-item {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+            max-width: 600px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer; 
+        }
+
+        .reward-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .reward-item h2 {
+            color: #673AB7;
+            font-size: 1.5rem;
+            margin: 10px 0;
+        }
+
+        .reward-item p {
+            color: #555;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .join-button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+            display: none; 
+        }
+
+        .join-button:hover {
+            background-color: #45a049;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 10px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Recompensas para Voluntarios</h1>
+    
+    <div class="container rewards-section">
+        <div class="reward-item" data-requirements="5">
+            <h2>Cupones de Descuento en Tiendas Locales</h2>
+            <p>Obtén un cupón de descuento del 20% en tiendas asociadas por cada actividad completada.</p>
+            <p><strong>Requisitos:</strong> Completar al menos 5 horas de voluntariado.</p>
+            <button class="join-button" onclick="unirseActividad('Cupones de Descuento en Tiendas Locales')">Unirse</button>
+        </div>
+        <div class="reward-item" data-requirements="3">
+            <h2>Camisetas Ecológicas</h2>
+            <p>Recibe una camiseta ecológica como reconocimiento por tu dedicación al reciclaje.</p>
+            <p><strong>Requisitos:</strong> Participar en 3 eventos de limpieza.</p>
+            <button class="join-button" onclick="unirseActividad('Camisetas Ecológicas')">Unirse</button>
+        </div>
+        <div class="reward-item" data-requirements="10">
+            <h2>Certificado de Agradecimiento</h2>
+            <p>Un certificado digital que reconoce tu contribución al programa de reciclaje.</p>
+            <p><strong>Requisitos:</strong> Completar un mínimo de 10 horas de voluntariado.</p>
+            <button class="join-button" onclick="unirseActividad('Certificado de Agradecimiento')">Unirse</button>
+        </div>
+    </div>
+
+
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="cerrarModal()">&times;</span>
+            <h2 id="modalTitle"></h2>
+            <p>Gracias por tu interés. Para unirte, por favor verifica tu disponibilidad.</p>
+            <button class="join-button" onclick="confirmarUnion()">Confirmar Unión</button>
+        </div>
+    </div>
+
+    <script>
+        
+        const horasVoluntariadoUsuario = 6; 
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const rewardItems = document.querySelectorAll('.reward-item');
+
+            rewardItems.forEach(item => {
+                const requisitos = parseInt(item.getAttribute('data-requirements'));
+
+                if (horasVoluntariadoUsuario >= requisitos) {
+                    item.querySelector('.join-button').style.display = 'inline-block'; 
+                }
+            });
+        });
+
+        function unirseActividad(recompensa) {
+            document.getElementById('modalTitle').innerText = recompensa;
+            document.getElementById('myModal').style.display = 'block';
+        }
+
+        function cerrarModal() {
+            document.getElementById('myModal').style.display = 'none';
+        }
+
+        function confirmarUnion() {
+            alert("Te has unido a la recompensa con éxito.");
+            cerrarModal();
+        }
+
+        
+        window.onclick = function(event) {
+            const modal = document.getElementById('myModal');
+            if (event.target === modal) {
+                cerrarModal();
+            }
+        }
+    </script>
+</body>
+</html>

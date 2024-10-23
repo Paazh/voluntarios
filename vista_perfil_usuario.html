@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil de Usuario</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .profile-container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            color: #673AB7; 
+            margin-bottom: 20px;
+        }
+
+        .info-section {
+            margin-bottom: 30px;
+            border-bottom: 2px solid #E6E6E6;
+            padding-bottom: 20px;
+        }
+
+        .info-section:last-child {
+            border-bottom: none;
+        }
+
+        .info-item {
+            margin: 10px 0;
+            font-size: 1.1rem;
+            color: #333;
+        }
+
+        .event-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .event-list-item {
+            background-color: #E6F7F5;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .event-title {
+            font-weight: bold;
+            color: #4CAF50; 
+        }
+
+        .event-date {
+            color: #673AB7;
+        }
+
+        .event-button {
+            background-color: #673AB7;
+            color: white;
+            border: none;
+            padding: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            font-size: 0.8rem;
+        }
+
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4); 
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .edit-button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        
+        .edit-form {
+            display: none; 
+            margin-top: 20px;
+        }
+
+        .edit-form input {
+            width: 100%;
+            padding: 8px; 
+            border: 1px solid #DDDDDD;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            font-size: 0.9rem; 
+        }
+
+        .save-button {
+            background-color: #673AB7;
+            color: white;
+            border: none;
+            padding: 8px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        
+        .profile-photo-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-photo {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border: 2px solid #673AB7; 
+            margin-right: 20px;
+        }
+
+        #uploadPhoto {
+            position: absolute;
+            opacity: 0;
+            width: 100px;
+            height: 100px;
+            cursor: pointer;
+        }
+
+        .upload-icon {
+            position: absolute;
+            top: 35%;
+            left: 35%;
+            font-size: 24px;
+            color: #673AB7; 
+        }
+
+        .upload-button {
+            display: none; 
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="profile-container">
+            <h2>Perfil de Usuario</h2>
+            <div class="profile-photo-container">
+                <img id="profilePhoto" src="default-profile.png" alt="Foto de perfil" class="profile-photo">
+                <input type="file" id="uploadPhoto" accept="image/*" onchange="previewImage(event)" />
+                <span class="upload-icon" onclick="document.getElementById('uploadPhoto').click();">📷</span>
+            </div>
+            <div class="info-section">
+                <h3>Información Personal</h3>
+                <div class="info-item">
+                    <strong>Nombre:</strong> <span id="userName">Juan Pérez</span>
+                </div>
+                <div class="info-item">
+                    <strong>Email:</strong> <span id="userEmail">juan.perez@example.com</span>
+                </div>
+                <div class="info-item">
+                    <strong>Teléfono:</strong> <span id="userPhone">+56 9 1234 5678</span>
+                </div>
+                <div class="info-item">
+                    <strong>Calle:</strong> <span id="userStreet">Av. Libertador Bernardo O'Higgins</span>
+                </div>
+                <div class="info-item">
+                    <strong>Ciudad:</strong> <span id="userCity">Temuco</span>
+                </div>
+                <button class="edit-button" onclick="toggleEditForm()">Editar</button>
+                <div class="edit-form" id="editForm">
+                    <input type="text" id="editName" placeholder="Nombre" />
+                    <input type="email" id="editEmail" placeholder="Email" />
+                    <input type="tel" id="editPhone" placeholder="Teléfono" />
+                    <input type="text" id="editStreet" placeholder="Calle" />
+                    <input type="text" id="editCity" placeholder="Ciudad" />
+                    <button class="save-button" onclick="saveProfile()">Guardar</button>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <h3>Eventos de Voluntariado Participados</h3>
+                <ul class="event-list">
+                    <li class="event-list-item">
+                        <div class="event-title">Limpieza de Parque</div>
+                        <div class="event-date">Fecha: 2024-10-01</div>
+                        <button class="event-button" onclick="showEventDetails('Limpieza de Parque', 'Una jornada de limpieza en el parque central de Temuco.')">Detalles</button>
+                    </li>
+                    <li class="event-list-item">
+                        <div class="event-title">Recolección de Residuos</div>
+                        <div class="event-date">Fecha: 2024-10-07</div>
+                        <button class="event-button" onclick="showEventDetails('Recolección de Residuos', 'Recolección de residuos en puntos de reciclaje.')">Detalles</button>
+                    </li>
+                    <li class="event-list-item">
+                        <div class="event-title">Charla sobre Reciclaje</div>
+                        <div class="event-date">Fecha: 2024-10-15</div>
+                        <button class="event-button" onclick="showEventDetails('Charla sobre Reciclaje', 'Charla educativa sobre la importancia del reciclaje.')">Detalles</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+   
+    <div id="eventModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="eventTitle"></h2>
+            <p id="eventDescription"></p>
+            <button onclick="closeModal()">Cerrar</button>
+        </div>
+    </div>
+
+    <script>
+        function previewImage(event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById("profilePhoto").src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function toggleEditForm() {
+            const editForm = document.getElementById("editForm");
+            if (editForm.style.display === "none" || editForm.style.display === "") {
+                editForm.style.display = "block";
+                document.getElementById("editName").value = document.getElementById("userName").textContent;
+                document.getElementById("editEmail").value = document.getElementById("userEmail").textContent;
+                document.getElementById("editPhone").value = document.getElementById("userPhone").textContent;
+                document.getElementById("editStreet").value = document.getElementById("userStreet").textContent;
+                document.getElementById("editCity").value = document.getElementById("userCity").textContent;
+            } else {
+                editForm.style.display = "none";
+            }
+        }
+
+        function saveProfile() {
+            document.getElementById("userName").textContent = document.getElementById("editName").value;
+            document.getElementById("userEmail").textContent = document.getElementById("editEmail").value;
+            document.getElementById("userPhone").textContent = document.getElementById("editPhone").value;
+            document.getElementById("userStreet").textContent = document.getElementById("editStreet").value;
+            document.getElementById("userCity").textContent = document.getElementById("editCity").value;
+            document.getElementById("editForm").style.display = "none";
+        }
+
+        function showEventDetails(title, description) {
+            document.getElementById("eventTitle").textContent = title;
+            document.getElementById("eventDescription").textContent = description;
+            document.getElementById("eventModal").style.display = "block";
+        }
+
+        function closeModal() {
+            document.getElementById("eventModal").style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            var modal = document.getElementById("eventModal");
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+
+</body>
+</html>
+
